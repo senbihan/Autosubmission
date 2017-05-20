@@ -43,9 +43,6 @@ def login():
 	browser = RoboBrowser(parser="html.parser")
 	browser.open("https://www.codechef.com")
 	login_form = browser.get_forms()[0]
-	if login_form == None:
-		print "Some Error Occurred"
-		exit(0)
 	login_form['name'] = User['username']
 	login_form['pass'] = User['password']
 	browser.submit_form(login_form)
@@ -56,7 +53,7 @@ def login_Until():
 	while True:
 		#print br
 		if br.url == "https://www.codechef.com/node" or br.url == "https://www.codechef.com/":
-			print bcolors.OKGREEN +  "Successfully Logged In" + bcolors.ENDC
+			print "Successfully Logged In"
 			break
 		elif br.url == "https://www.codechef.com/session/limit":
 			sess_form = br.get_form(id='session-limit-page')
@@ -66,7 +63,7 @@ def login_Until():
 			sess_form['sid'].value = opList[0]
 			br.submit_form(sess_form)
 		else:
-			#print br.url
+			print br.url
 			br = login()
 	return br
  
