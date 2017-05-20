@@ -134,4 +134,4 @@ if __name__ == '__main__':
 	elif res_img.endswith('alert-icon.gif'):
 		print bcolors.WARNING + bcolors.BOLD + "Runtime Error" + bcolors.ENDC
 	elif res_img.endswith('cross-icon.gif'):
-		print bcolors.FAIL + bcolors.BOLD + "Accepted" + bcolors.ENDC
+		print bcolors.FAIL + bcolors.BOLD + "Wrong Answer" + bcolors.ENDC
