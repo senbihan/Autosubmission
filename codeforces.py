@@ -129,7 +129,7 @@ elif p_type == "P" or p_type == "p":
 browser.open(problem_url)
 
 if p_type == "C" or p_type == "c": #Running Contest
-	form = browser.get_forms()[0]
+	form = browser.get_forms()[1]
 	form['submittedProblemIndex'].value = str(problem_index)
 elif p_type == "pc": #Past Contest
 	form = browser.get_forms()[1]
