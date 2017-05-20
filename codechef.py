@@ -110,6 +110,9 @@ if __name__ == '__main__':
 	elif prob_type == 'c':
 		contest = raw_input('Enter Contest Code: ')
 		url = 'https://www.codechef.com/'+contest+'/submit/'+prob_code
+	else:
+		print bcolors.FAIL + bcolors.BOLD + "Command Error: $python codechef.py p|c <path_to_source_file>" + bcolors.ENDC
+		exit(0)
 
 	browser.open(url)
 	subForm = browser.get_form(id='problem-submission')
