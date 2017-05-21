@@ -70,10 +70,16 @@ def login_Until():
 			br = login()
 	return br
  
-def get_Problem_Code(prog,char):
+def get_Problem_Code(prog):
 	"""Gets Problem code if the file name and the problem code is similar,
-		for example, if the file name is CHEFCODE.cpp the problem code will be like CHEFCODE
+		for example, if the file name is CHEFCODE.cpp and the problem code is CHEFCODE
 	"""
+	os = platform.system()
+	char =''
+	if os == 'Windows':
+		char = '\\'
+	elif os == 'Linux':
+		char ='/'
 	s = prog
 	while True:
 		i = s.find(char) 
@@ -91,17 +97,11 @@ if __name__ == '__main__':
 		exit(0)
 	
 	browser = login_Until()
-	os = platform.system()
-	char =''
-	if os == 'Windows':
-		char = '\\'
-	elif os == 'Linux':
-		char ='/'
 
 	prob_type = sys.argv[1]
 	prog = sys.argv[2]
 
-	#prob_code = get_Problem_Code(prog,char) #use this if you submit your source file as problem code 
+	#prob_code = get_Problem_Code(prog) #use this if you submit your source file as problem code 
 
 	prog_lang = prog[prog.find('.')+1:]
 	prob_code = raw_input('Problem Code: ')
