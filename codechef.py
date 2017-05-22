@@ -25,8 +25,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 User = {
-	'username'		:	'your_user_name',
-	'password'		:	'your password'
+	'username'		:	'user_name',
+	'password'		:	'password'
 }
 
 #add your suitable language and code from codechef submit drop down menu
@@ -49,6 +49,7 @@ def login():
 	login_form['name'] = User['username']
 	login_form['pass'] = User['password']
 	browser.submit_form(login_form)
+	#authentication yet to be implemented
 	return browser
 
 def login_Until():
@@ -106,18 +107,20 @@ if __name__ == '__main__':
 	prog_lang = prog[prog.find('.')+1:]
 	prob_code = raw_input('Problem Code: ')
 	if prob_type == 'p':
-		url = 'https://www.codechef.com/submit/'+prob_code
+		sub_url = 'https://www.codechef.com/submit/'+prob_code
+		res_url = url = 'https://www.codechef.com/status/'+prob_code+','+User["username"]
 	elif prob_type == 'c':
 		contest = raw_input('Enter Contest Code: ')
-		url = 'https://www.codechef.com/'+contest+'/submit/'+prob_code
+		sub_url = 'https://www.codechef.com/'+contest+'/submit/'+prob_code
+		res_url = url = 'https://www.codechef.com/'+contest+'/status/'+prob_code+','+User["username"];
 	else:
 		print bcolors.FAIL + bcolors.BOLD + "Command Error: $python codechef.py p|c <path_to_source_file>" + bcolors.ENDC
 		exit(0)
 
-	browser.open(url)
+	browser.open(sub_url)
 	subForm = browser.get_form(id='problem-submission')
 	if subForm == None:
-		print bcolors.FAIL +"Some Error Occured! Retry " + bcolors.ENDC
+		print bcolors.FAIL +"Some Error Occured! Retry. [Authentication Problem] " + bcolors.ENDC
 		exit(0)
 
 	subForm['files[sourcefile]'].value = open(prog,'r')
@@ -129,15 +132,23 @@ if __name__ == '__main__':
 	print bcolors.OKBLUE + "Waiting for Verdict..."  + bcolors.ENDC
 	time.sleep(delay)
 
-	url = 'https://www.codechef.com/status/'+prob_code+','+User["username"]
-	f = requests.get(url)
+
+	f = requests.get(res_url)
 	soup = BeautifulSoup(f.text,"html.parser")
 	t = soup.find_all("table",{"class" : "dataTable"})
-	res_img = t[0].tbody.tr.img['src']
+	area = t[0].tbody.tr
+	if area.img == None:
+		print bcolors.FAIL + "Error! Please Check Verdict on site : " + res_url + bcolors.ENDC
+		exit(0)
 
+	res_img = area.img['src']
 	if res_img.endswith('tick-icon.gif'):
 		print bcolors.OKGREEN + bcolors.BOLD + "Accepted" + bcolors.ENDC
 	elif res_img.endswith('alert-icon.gif'):
-		print bcolors.WARNING + bcolors.BOLD + "Runtime Error" + bcolors.ENDC
+		print bcolors.WARNING + bcolors.BOLD + "Compilation Error" + bcolors.ENDC
 	elif res_img.endswith('cross-icon.gif'):
 		print bcolors.FAIL + bcolors.BOLD + "Wrong Answer" + bcolors.ENDC
+	elif res_img.endswith('runtime-error.png'):
+		print bcolors.FAIL + bcolors.BOLD + "Runtime Error" + bcolors.ENDC
+	elif res_img.endswith('clock_error.png'):
+		print bcolors.WARNING + bcolors.BOLD + "Time Limit Exceeded" + bcolors.ENDC

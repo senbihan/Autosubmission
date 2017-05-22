@@ -10,6 +10,7 @@ run ```$python setup.py install``` for installing the prerequisites
    ```p``` for practice mode
    ```c``` for contest mode
    ```pc``` for past contest mode
+3. Due to time delay between server and local time may show ```incorrect signatureKey``` instead of verdict. Please run ```cf_last_submission.py``` for the verdict. 
   
 ## Submit to codechef
 1. Open ```codechef.py``` and add your handle, password
